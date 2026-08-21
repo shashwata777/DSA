@@ -65,7 +65,6 @@ public class binarytree {
 
     public static void main(String[] args) {
 
-        // Create nodes
         Node a = new Node(3);   // root
         Node b = new Node(4);
         Node c = new Node(2);
