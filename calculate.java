@@ -1,61 +1,64 @@
-import java.util.*;
+import java.util.Stack;
 
 public class calculate {
 
 
+
         public static int calculate(String s) {
-
-            int n = s.length();
-            int num = 0;
-            char sign = '+';
-
             Stack<Integer> stack = new Stack<>();
 
-            for (int i = 0; i < n; i++) {
-
-                char c = s.charAt(i);
-
-                if (Character.isDigit(c)) {
-                    num = num * 10 + (c - '0');
-                }
-
-                if ((!Character.isDigit(c) && c != ' ') || i == n - 1) {
-
-                    if (sign == '+') {
-                        stack.push(num);
-                    }
-                    else if (sign == '-') {
-                        stack.push(-num);
-                    }
-                    else if (sign == '*') {
-                        stack.push(stack.pop() * num);
-                    }
-                    else if (sign == '/') {
-                        stack.push(stack.pop() / num);
-                    }
-
-                    sign = c;
-                    num = 0;
-                }
-            }
-
             int result = 0;
+            int number = 0;
+            int sign = 1;
 
-            for (int x : stack) {
-                result += x;
+            for (int i = 0; i < s.length(); i++) {
+                char ch = s.charAt(i);
+
+                if (Character.isDigit(ch)) {
+                    number = number * 10 + (ch - '0');
+                }
+
+                else if (ch == '+') {
+                    result += sign * number;
+                    number = 0;
+                    sign = 1;
+                }
+
+                else if (ch == '-') {
+                    result += sign * number;
+                    number = 0;
+                    sign = -1;
+                }
+
+                else if (ch == '(') {
+                    stack.push(result);
+                    stack.push(sign);
+
+                    result = 0;
+                    sign = 1;
+                }
+
+                else if (ch == ')') {
+                    result += sign * number;
+                    number = 0;
+
+                    result *= stack.pop();
+                    result += stack.pop();
+                }
             }
+
+            result += sign * number;
 
             return result;
         }
 
         public static void main(String[] args) {
+            String s = "(1+(4+5+2)-3)+(6+8)";
 
-            String s = "3+2*2";
-
-            int result = calculate(s);
-
-            System.out.println("Input: " + s);
-            System.out.println("Output: " + result);
+            System.out.println(calculate(s));
         }
     }
+
+
+
 
